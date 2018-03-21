@@ -31,34 +31,34 @@ class Pawn(Kpiece):
         if(self.player == "White"):
             if(self.rank == 6):
                 #checkforcheck
-                if(not isinstance(self.currentboard.checkpos(self.rank-2,self.file),Kpiece)):
-                    possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +"to "+ (self.truefile)+str(self.truerank+2))
+                if((not isinstance(self.currentboard.checkpos(self.rank-2,self.file),Kpiece)) and (self.currentboard.checkpos(self.rank-2,self.file) != None)):
+                    possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank+2))
 
-            if(not isinstance(self.currentboard.checkpos(self.rank-1,self.file),Kpiece)):
-                possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +"to "+ (self.truefile)+str(self.truerank+1))
+            if(not isinstance(self.currentboard.checkpos(self.rank-1,self.file),Kpiece)  and (self.currentboard.checkpos(self.rank-1,self.file) != None)):
+                possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank+1))
 
-            if(isinstance(self.currentboard.checkpos(self.rank-1,self.file-1),Kpiece)):
-                possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +"to "+ chr(ord(self.truefile)-1)+str(self.truerank+1))
+            if(isinstance(self.currentboard.checkpos(self.rank-1,self.file-1),Kpiece)  and (self.currentboard.checkpos(self.rank-1,self.file-1) != None)):
+                possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)-1)+str(self.truerank+1))
 
-            if(isinstance(self.currentboard.checkpos(self.rank-1,self.file+1),Kpiece)):
-                possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +"to "+ chr(ord(self.truefile)+1)+str(self.truerank+1))
+            if(isinstance(self.currentboard.checkpos(self.rank-1,self.file+1),Kpiece)  and (self.currentboard.checkpos(self.rank-1,self.file+1) != None)):
+                possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)+1)+str(self.truerank+1))
 
         elif(self.player == "Black"):
             if(self.rank == 1):
                 #checkforcheck
-                if(not isinstance(self.currentboard.checkpos(self.rank+2,self.file),Kpiece)):
-                    outputstring = "Black Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank-2)
+                if(not isinstance(self.currentboard.checkpos(self.rank+2,self.file),Kpiece) and (self.currentboard.checkpos(self.rank+2,self.file) != None)):
 
-                    possiblemovesforoutput.append(str("Black Pawn from "+self.truefile+str(self.truerank) +"to "+ (self.truefile)+str(self.truerank-2)))
 
-            if(not isinstance(self.currentboard.checkpos(self.rank+1,self.file),Kpiece)):
-                possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +"to "+ (self.truefile)+str(self.truerank-1))
+                    possiblemovesforoutput.append(str("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank-2)))
 
-            if(isinstance(self.currentboard.checkpos(self.rank+1,self.file-1),Kpiece)):
-                possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +"to "+ chr(ord(self.truefile)-1)+str(self.truerank-1))
+            if(not isinstance(self.currentboard.checkpos(self.rank+1,self.file),Kpiece)  and (self.currentboard.checkpos(self.rank+1,self.file) != None)):
+                possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank-1))
 
-            if(isinstance(self.currentboard.checkpos(self.rank+1,self.file+1),Kpiece)):
-                possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +"to "+ chr(ord(self.truefile)+1)+str(self.truerank-1))
+            if(isinstance(self.currentboard.checkpos(self.rank+1,self.file-1),Kpiece)  and (self.currentboard.checkpos(self.rank+1,self.file-1) != None)):
+                possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)-1)+str(self.truerank-1))
+
+            if(isinstance(self.currentboard.checkpos(self.rank+1,self.file+1),Kpiece)  and (self.currentboard.checkpos(self.rank+1,self.file+1) != None)):
+                possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)+1)+str(self.truerank-1))
 
         None
         return possiblemovesforoutput
@@ -81,9 +81,20 @@ class Bishop(Kpiece):
     def actions(self):
         possiblemovesforoutput = []
         possiblemovessimple = []
-        for pair in self.movements:
+        newmove = self.movements[:]
+        for pair in newmove:
             None
-            #while isinstance(self.currentboard.checkpos(self.rank+pair[0],self.file+pair[1]) != Kpiece)
+            while (not isinstance(self.currentboard.checkpos(self.rank+pair[0],self.file+pair[1]),Kpiece))  and (self.currentboard.checkpos(self.rank+pair[0],self.file+pair[1]) != None):
+                possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+pair[1])+str(self.truerank-pair[0])  )
+                pair[0] += pair[0]
+                pair[1] += pair[1]
+
+            else:
+                if ((isinstance(self.currentboard.checkpos(self.rank+pair[0],self.file+pair[1]),Kpiece))  and (self.currentboard.checkpos(self.rank+pair[0],self.file+pair[1]) != None) and (self.player != self.currentboard.checkpos(self.rank+pair[0],self.file+pair[1]))):
+                    possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+pair[1])+str(self.truerank-pair[0])  )
+                    None
+                None
+
 
 
 

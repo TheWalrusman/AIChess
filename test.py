@@ -61,6 +61,7 @@ for letter in Fenstring[0]:
         filecount += int(letter)
 for letter in Fenstring[1]:
     current_player = letter
+    ourboard.board.currentplayer = letter
 for letter in Fenstring[2]:
     if letter in 'Q':
         whitecastle.append(letter.upper())
@@ -84,7 +85,7 @@ for letter in Fenstring[5]:
 
 for rows in ourboard.board:
     for piece in rows:
-        if(isinstance(piece,Kpieces.Pawn)):
+        if(isinstance(piece,Kpieces.Bishop)):
             piece.actions()
 
 

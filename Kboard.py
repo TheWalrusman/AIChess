@@ -12,6 +12,7 @@ class Board:
         self.whitecastleQ = "-"
         self.whitecastleK = "-"
         self.enpassant = ""
+        self.currentplayer = ""
 
 
     def checkpos(self,inrank,infile):
