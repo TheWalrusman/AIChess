@@ -86,7 +86,7 @@ for letter in Fenstring[5]:
 
 for rows in ourboard.board:
     for piece in rows:
-        if(isinstance(piece,Kpieces.King)):
+        if(isinstance(piece,Kpieces.Pawn)):
             piece.actions()
 
 
