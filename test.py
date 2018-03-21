@@ -82,7 +82,10 @@ for letter in Fenstring[4]:
 for letter in Fenstring[5]:
     fullmove = int(letter)
 
-
+for rows in ourboard.board:
+    for piece in rows:
+        if(isinstance(piece,Kpieces.Pawn)):
+            piece.actions()
 
 
 None

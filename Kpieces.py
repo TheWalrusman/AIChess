@@ -21,6 +21,7 @@ class Pawn(Kpiece):
     def __init__(self,inrank,infile,player,intype,board):
         Kpiece.__init__(self,inrank,infile,player,board)
         self.type = intype
+        
 
 
 
@@ -28,12 +29,39 @@ class Pawn(Kpiece):
         possiblemovesforoutput = []
         possiblemovessimple = []
         if(self.player == "White"):
+            if(self.rank == 6):
+                #checkforcheck
+                if(not isinstance(self.currentboard.checkpos(self.rank-2,self.file),Kpiece)):
+                    possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +"to "+ (self.truefile)+str(self.truerank+2))
+
+            if(not isinstance(self.currentboard.checkpos(self.rank-1,self.file),Kpiece)):
+                possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +"to "+ (self.truefile)+str(self.truerank+1))
+
+            if(isinstance(self.currentboard.checkpos(self.rank-1,self.file-1),Kpiece)):
+                possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +"to "+ chr(ord(self.truefile)-1)+str(self.truerank+1))
+
+            if(isinstance(self.currentboard.checkpos(self.rank-1,self.file+1),Kpiece)):
+                possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +"to "+ chr(ord(self.truefile)+1)+str(self.truerank+1))
+
+        elif(self.player == "Black"):
             if(self.rank == 1):
                 #checkforcheck
-                if(type(self.currentboard.checkpos(self.rank,self.file+2)) != Kpiece):
-                    possiblemovesforoutput.append("White Pawn from "+self.truefile+self.truerank +"to "+ chr(self.truefile)+(self.truerank+2))
-            if(type(self.currentboard.checkpos(self.rank,self.file+2)) == Kpiece):
-                possiblemovesforoutput.append("White Pawn from "+self.truefile+self.truerank +"to "+ chr(self.truefile)+(self.truerank+2))
+                if(not isinstance(self.currentboard.checkpos(self.rank+2,self.file),Kpiece)):
+                    outputstring = "Black Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank-2)
+
+                    possiblemovesforoutput.append(str("Black Pawn from "+self.truefile+str(self.truerank) +"to "+ (self.truefile)+str(self.truerank-2)))
+
+            if(not isinstance(self.currentboard.checkpos(self.rank+1,self.file),Kpiece)):
+                possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +"to "+ (self.truefile)+str(self.truerank-1))
+
+            if(isinstance(self.currentboard.checkpos(self.rank+1,self.file-1),Kpiece)):
+                possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +"to "+ chr(ord(self.truefile)-1)+str(self.truerank-1))
+
+            if(isinstance(self.currentboard.checkpos(self.rank+1,self.file+1),Kpiece)):
+                possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +"to "+ chr(ord(self.truefile)+1)+str(self.truerank-1))
+
+        None
+        return possiblemovesforoutput
 
 
 
@@ -47,6 +75,17 @@ class Bishop(Kpiece):
     def __init__(self,inrank,infile,player,intype,board):
         Kpiece.__init__(self,inrank,infile,player,board)
         self.type = intype
+        self.movements = [(1,1),(1,-1),(-1,1),(-1,-1)]
+
+
+    def actions(self):
+        possiblemovesforoutput = []
+        possiblemovessimple = []
+        for pair in self.movements:
+            None
+            #while isinstance(self.currentboard.checkpos(self.rank+pair[0],self.file+pair[1]) != Kpiece)
+
+
 
 class Rook(Kpiece):
     def __init__(self,inrank,infile,player,intype,board):
