@@ -6,13 +6,14 @@ import random
 
 
 class Empty:
-    def __init__(self,board):
+    def __init__(self):
         self.rank = None
         self.truerank = None
         self.file = None
         self.truefile = None
         self.player = None
-        self.currentboard = board
+        self.currentboard = None
+        self.rep = "0"
         None
 
 class Kpiece:
@@ -34,12 +35,13 @@ class Pawn(Kpiece):
         Kpiece.__init__(self,inrank,infile,player,board)
         self.type = intype
         self.possiblepromotes = ["Queen","Knight","Rook","Bishop",]
+        self.rep = "P"
         
 
     def checkpromote(self,rank,file):
-        if (self.currentboard.player == "White") and (rank == 7):
+        if (self.currentboard.currentplayer == "White") and (rank == 0):
             return True
-        elif(self.currentboard.player == "Black") and (rank == 0):
+        elif(self.currentboard.currentplayer == "Black") and (rank == 8):
             return True
         else:
             return False
@@ -53,7 +55,9 @@ class Pawn(Kpiece):
                 #checkforcheck
                 if((not isinstance(self.currentboard.checkpos(self.rank-2,self.file),Kpiece)) and (not isinstance(self.currentboard.checkpos(self.rank-1,self.file),Kpiece)) and (self.currentboard.checkpos(self.rank-2,self.file) != None)):
                     possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank+2))
-                    newenpassant = (self.rank-1,self.file,self.truefile+str(self.truerank+1))
+                    if((isinstance(self.currentboard.checkpos(self.rank-2,self.file+1),Kpiece)) or (isinstance(self.currentboard.checkpos(self.rank-2,self.file-1),Kpiece))):
+                        newenpassant = (self.rank-1,self.file)
+                        nicenewenpassant = (self.truefile+str(self.truerank+1))
                     None
 
             if(not isinstance(self.currentboard.checkpos(self.rank-1,self.file),Kpiece)  and (self.currentboard.checkpos(self.rank-1,self.file) != None)):
@@ -62,13 +66,13 @@ class Pawn(Kpiece):
                 else:
                     possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank+1))
 
-            if(isinstance(self.currentboard.checkpos(self.rank-1,self.file-1),Kpiece)  and (self.currentboard.checkpos(self.rank-1,self.file-1) != None)and (self.player != self.currentboard.checkpos(self.rank-1,self.file-1).player)):
+            if((isinstance(self.currentboard.checkpos(self.rank-1,self.file-1),Kpiece) or (self.currentboard.enpassant ==(chr(ord(self.truefile)-1)+str(self.truerank+1))))  and (self.currentboard.checkpos(self.rank-1,self.file-1) != None)and (self.player != self.currentboard.checkpos(self.rank-1,self.file-1).player)):
                 if(self.checkpromote(self.rank-1,self.file-1)):
                     possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)-1)+str(self.truerank+1)+" With Promotion: "+str(random.choice(self.possiblepromotes)))
                 else:
                     possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)-1)+str(self.truerank+1))
 
-            if(isinstance(self.currentboard.checkpos(self.rank-1,self.file+1),Kpiece)  and (self.currentboard.checkpos(self.rank-1,self.file+1) != None)and (self.player != self.currentboard.checkpos(self.rank-1,self.file+1).player)):
+            if((isinstance(self.currentboard.checkpos(self.rank-1,self.file+1),Kpiece) or (self.currentboard.enpassant ==(chr(ord(self.truefile)+1)+str(self.truerank+1))) )  and (self.currentboard.checkpos(self.rank-1,self.file+1) != None)and (self.player != self.currentboard.checkpos(self.rank-1,self.file+1).player)):
                 if(self.checkpromote(self.rank-1,self.file+1)):
                     possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)+1)+str(self.truerank+1)+" With Promotion: "+str(random.choice(self.possiblepromotes)))
                 else:
@@ -79,7 +83,9 @@ class Pawn(Kpiece):
                 #checkforcheck
                 if(not isinstance(self.currentboard.checkpos(self.rank+2,self.file),Kpiece)and (not isinstance(self.currentboard.checkpos(self.rank+1,self.file),Kpiece)) and (self.currentboard.checkpos(self.rank+2,self.file) != None)):
                     possiblemovesforoutput.append(str("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank-2)))
-                    newenpassant = (self.rank+1,self.file,self.truefile+str(self.truerank-1))
+                    if((isinstance(self.currentboard.checkpos(self.rank+2,self.file+1),Kpiece)) or (isinstance(self.currentboard.checkpos(self.rank+2,self.file-1),Kpiece))):
+                        newenpassant = (self.rank+1,self.file)
+                        nicenewenpassant = (self.truefile+str(self.truerank-1))
                     None
 
             if(not isinstance(self.currentboard.checkpos(self.rank+1,self.file),Kpiece)  and (self.currentboard.checkpos(self.rank+1,self.file) != None)):
@@ -88,13 +94,13 @@ class Pawn(Kpiece):
                 else:
                     possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank-1))
 
-            if(isinstance(self.currentboard.checkpos(self.rank+1,self.file-1),Kpiece)  and (self.currentboard.checkpos(self.rank+1,self.file-1) != None)and (self.player != self.currentboard.checkpos(self.rank+1,self.file-1).player)):
+            if((isinstance(self.currentboard.checkpos(self.rank+1,self.file-1),Kpiece) or (self.currentboard.enpassant ==(chr(ord(self.truefile)-1)+str(self.truerank-1))))  and (self.currentboard.checkpos(self.rank+1,self.file-1) != None)and (self.player != self.currentboard.checkpos(self.rank+1,self.file-1).player)):
                 if(self.checkpromote(self.rank+1,self.file-1)):
                     possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)-1)+str(self.truerank-1)+" With Promotion: "+str(random.choice(self.possiblepromotes)))
                 else:
                     possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)-1)+str(self.truerank-1))
 
-            if(isinstance(self.currentboard.checkpos(self.rank+1,self.file+1),Kpiece)  and (self.currentboard.checkpos(self.rank+1,self.file+1) != None)and (self.player != self.currentboard.checkpos(self.rank+1,self.file+1).player)):
+            if((isinstance(self.currentboard.checkpos(self.rank+1,self.file+1),Kpiece) or (self.currentboard.enpassant ==(chr(ord(self.truefile)+1)+str(self.truerank-1))))  and (self.currentboard.checkpos(self.rank+1,self.file+1) != None)and (self.player != self.currentboard.checkpos(self.rank+1,self.file+1).player)):
                 if(self.checkpromote(self.rank+1,self.file+1)):
                     possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)+1)+str(self.truerank-1)+" With Promotion: "+str(random.choice(self.possiblepromotes)))
                 else:
@@ -116,6 +122,7 @@ class Bishop(Kpiece):
         Kpiece.__init__(self,inrank,infile,player,board)
         self.type = intype
         self.movements = [(1,1),(1,-1),(-1,1),(-1,-1)]
+        self.rep = "B"
 
 
     def actions(self):
@@ -144,6 +151,7 @@ class Rook(Kpiece):
         Kpiece.__init__(self,inrank,infile,player,board)
         self.type = intype
         self.movements = [(1,0),(-1,0),(0,1),(0,-1)]
+        self.rep = "R"
 
     def actions(self):
         possiblemovesforoutput = []
@@ -168,6 +176,7 @@ class Knight(Kpiece):
         Kpiece.__init__(self,inrank,infile,player,board)
         self.type = intype
         self.movements = [(2,1),(2,-1),(-2,1),(-2,-1),(1,2),(-1,2),(1,-2),(-1,-2)]
+        self.rep = "N"
 
     def actions(self):
         possiblemovesforoutput = []
@@ -192,6 +201,7 @@ class Queen(Kpiece):
         Kpiece.__init__(self,inrank,infile,player,board)
         self.type = intype
         self.movements = [(1,1),(1,-1),(-1,1),(-1,-1),(1,0),(-1,0),(0,1),(0,-1)]
+        self.rep = "Q"
 
     def actions(self):
         possiblemovesforoutput = []
@@ -218,6 +228,7 @@ class King(Kpiece):
         Kpiece.__init__(self,inrank,infile,player,board)
         self.type = intype
         self.movements = [(1,1),(1,-1),(-1,1),(-1,-1),(1,0),(-1,0),(0,1),(0,-1)]
+        self.rep = "K"
 
 
     def actions(self):
