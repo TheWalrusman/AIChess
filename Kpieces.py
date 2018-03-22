@@ -1,7 +1,19 @@
 
 
 import Kboard
+import random
 
+
+
+class Empty:
+    def __init__(self,board):
+        self.rank = None
+        self.truerank = None
+        self.file = None
+        self.truefile = None
+        self.player = None
+        self.currentboard = board
+        None
 
 class Kpiece:
     def __init__(self,inrank,infile,player,board):
@@ -21,8 +33,16 @@ class Pawn(Kpiece):
     def __init__(self,inrank,infile,player,intype,board):
         Kpiece.__init__(self,inrank,infile,player,board)
         self.type = intype
+        self.possiblepromotes = ["Queen","Knight","Rook","Bishop",]
         
 
+    def checkpromote(self,rank,file):
+        if (self.currentboard.player == "White") and (rank == 7):
+            return True
+        elif(self.currentboard.player == "Black") and (rank == 0):
+            return True
+        else:
+            return False
 
 
     def actions(self):
@@ -37,13 +57,22 @@ class Pawn(Kpiece):
                     None
 
             if(not isinstance(self.currentboard.checkpos(self.rank-1,self.file),Kpiece)  and (self.currentboard.checkpos(self.rank-1,self.file) != None)):
-                possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank+1))
+                if(self.checkpromote(self.rank-1,self.file)):
+                    possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank+1)+" With Promotion: "+str(random.choice(self.possiblepromotes)))
+                else:
+                    possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank+1))
 
             if(isinstance(self.currentboard.checkpos(self.rank-1,self.file-1),Kpiece)  and (self.currentboard.checkpos(self.rank-1,self.file-1) != None)and (self.player != self.currentboard.checkpos(self.rank-1,self.file-1).player)):
-                possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)-1)+str(self.truerank+1))
+                if(self.checkpromote(self.rank-1,self.file-1)):
+                    possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)-1)+str(self.truerank+1)+" With Promotion: "+str(random.choice(self.possiblepromotes)))
+                else:
+                    possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)-1)+str(self.truerank+1))
 
             if(isinstance(self.currentboard.checkpos(self.rank-1,self.file+1),Kpiece)  and (self.currentboard.checkpos(self.rank-1,self.file+1) != None)and (self.player != self.currentboard.checkpos(self.rank-1,self.file+1).player)):
-                possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)+1)+str(self.truerank+1))
+                if(self.checkpromote(self.rank-1,self.file+1)):
+                    possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)+1)+str(self.truerank+1)+" With Promotion: "+str(random.choice(self.possiblepromotes)))
+                else:
+                    possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)+1)+str(self.truerank+1))
 
         elif(self.player == "Black"):
             if(self.rank == 1):
@@ -54,13 +83,22 @@ class Pawn(Kpiece):
                     None
 
             if(not isinstance(self.currentboard.checkpos(self.rank+1,self.file),Kpiece)  and (self.currentboard.checkpos(self.rank+1,self.file) != None)):
-                possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank-1))
+                if(self.checkpromote(self.rank+1,self.file)):
+                    possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank-1)+" With Promotion: "+str(random.choice(self.possiblepromotes)))
+                else:
+                    possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank-1))
 
             if(isinstance(self.currentboard.checkpos(self.rank+1,self.file-1),Kpiece)  and (self.currentboard.checkpos(self.rank+1,self.file-1) != None)and (self.player != self.currentboard.checkpos(self.rank+1,self.file-1).player)):
-                possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)-1)+str(self.truerank-1))
+                if(self.checkpromote(self.rank+1,self.file-1)):
+                    possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)-1)+str(self.truerank-1)+" With Promotion: "+str(random.choice(self.possiblepromotes)))
+                else:
+                    possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)-1)+str(self.truerank-1))
 
             if(isinstance(self.currentboard.checkpos(self.rank+1,self.file+1),Kpiece)  and (self.currentboard.checkpos(self.rank+1,self.file+1) != None)and (self.player != self.currentboard.checkpos(self.rank+1,self.file+1).player)):
-                possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)+1)+str(self.truerank-1))
+                if(self.checkpromote(self.rank+1,self.file+1)):
+                    possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)+1)+str(self.truerank-1)+" With Promotion: "+str(random.choice(self.possiblepromotes)))
+                else:
+                    possiblemovesforoutput.append("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)+1)+str(self.truerank-1))
 
         None
         return possiblemovesforoutput

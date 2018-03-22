@@ -3,10 +3,10 @@
 
 
 
-
+import Kpieces
 class Board:
     def __init__(self):
-        self.board = [[0 for y in range(8)] for x in range(8)]
+        self.board = [[Kpieces.Empty(self.board) for y in range(8)] for x in range(8)]
         self.blackcastleQ = "-"
         self.blackcastleK = "-"
         self.whitecastleQ = "-"

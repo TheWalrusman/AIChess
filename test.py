@@ -7,7 +7,7 @@ import Kpieces
 #ourboard = [[0 for y in range(8)] for x in range(8)]
 ourboard = Kboard.Board()
 Fenstring = "rnbqkbnr/2pppppp/p7/1p7/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"
-Fenstring = "rnbqkb1r/pppp2pp/4pP2/3Q4/4Kn2/1R6/PPPPP1PP/1NB2BNR w KQkq e3 0 1"
+Fenstring = "1nbqkbnr/Pppppppp/1pr5/8/8/8/1PPPPPPP/RNBQKBNR w KQkq e3 0 1"
 Fenstring = Fenstring.split()
 rankcount = 0
 filecount = 0
@@ -86,7 +86,7 @@ for letter in Fenstring[5]:
 
 for rows in ourboard.board:
     for piece in rows:
-        if(isinstance(piece,Kpieces.Pawn)):
+        if(isinstance(piece,Kpieces.Pawn) and (piece.player == ourboard.board.currentplayer)):
             piece.actions()
 
 
