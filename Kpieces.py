@@ -123,6 +123,7 @@ class Pawn(Kpiece):
         self.type = intype
         self.possiblepromotes = ["Queen","Knight","Rook","Bishop",]
         self.rep = "P"
+        self.score = 1
         
 
     def checkpromote(self,rank,file):
@@ -227,6 +228,7 @@ class Bishop(Kpiece):
         self.type = intype
         self.movements = [(1,1),(1,-1),(-1,1),(-1,-1)]
         self.rep = "B"
+        self.score = 3
 
 
     def actions(self):
@@ -257,6 +259,7 @@ class Rook(Kpiece):
         self.movements = [(1,0),(-1,0),(0,1),(0,-1)]
         self.rep = "R"
         self.moved = [True]
+        self.score = 5
         
 
     def actions(self):
@@ -288,6 +291,7 @@ class Knight(Kpiece):
         self.type = intype
         self.movements = [(2,1),(2,-1),(-2,1),(-2,-1),(1,2),(-1,2),(1,-2),(-1,-2)]
         self.rep = "N"
+        self.score = 3
 
     def actions(self):
         possiblemovesforoutput = []
@@ -314,6 +318,7 @@ class Queen(Kpiece):
         self.type = intype
         self.movements = [(1,1),(1,-1),(-1,1),(-1,-1),(1,0),(-1,0),(0,1),(0,-1)]
         self.rep = "Q"
+        self.score = 9
 
     def actions(self):
         possiblemovesforoutput = []
@@ -343,6 +348,7 @@ class King(Kpiece):
         self.movements = [(1,1),(1,-1),(-1,1),(-1,-1),(1,0),(-1,0),(0,1),(0,-1)]
         self.rep = "K"
         self.moved = [False]
+        self.score = 0
         
         
 
