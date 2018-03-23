@@ -8,7 +8,7 @@ import copy
 #ourboard = [[0 for y in range(8)] for x in range(8)]
 ourboard = Kboard.Board()
 Fenstring = "rnbqkbnr/2pppppp/p7/1p7/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"
-Fenstring = "r6r/1nbqkbn1/1pppppp1/1p6/P7/1PPPPPPP/RNB1KBp1/3Q3R b - e3 0 1"
+Fenstring = "rnbqkbnr/p1pppppp/8/PpP5/1P6/8/3PPPPP/RNBQKBNR w KQkq b6 0 1"
 Fenstring = Fenstring.split()
 rankcount = 0
 filecount = 0
@@ -37,6 +37,7 @@ for letter in Fenstring[0]:
         filecount += 1
     elif  letter in 'k':
         ourboard.board[rankcount][filecount] = Kpieces.King(rankcount,filecount,"Black","King",ourboard)
+        ourboard.blackking = ourboard.board[rankcount][filecount]
         filecount += 1
     elif letter in 'P':
         ourboard.board[rankcount][filecount] = Kpieces.Pawn(rankcount,filecount,"White","Pawn",ourboard)
@@ -55,6 +56,7 @@ for letter in Fenstring[0]:
         filecount += 1
     elif  letter in 'K':
         ourboard.board[rankcount][filecount] = Kpieces.King(rankcount,filecount,"White","King",ourboard)
+        ourboard.whiteKing = ourboard.board[rankcount][filecount]
         filecount += 1
     elif  letter in '/':
         filecount = 0
@@ -84,9 +86,22 @@ for letter in Fenstring[2]:
         blackcastle.append(letter.upper())
         ourboard.blackcastleK = [True]
         ourboard.board[0][7].moved = ourboard.blackcastleK
-for letter in Fenstring[3]:
+#for letter in Fenstring[3]:
+if Fenstring[3] != '-':
+    letter = Fenstring[3]
     enpassant += letter
     ourboard.enpassant += letter
+    splitenp = list(letter)
+    testl = [(ord(x)-97) for x in ['a',"b","c","d","e","f","g","h"]]
+    if(ourboard.currentplayer == "White"):
+        trank = 8-int(splitenp[1])+1
+        tfile = (ord(splitenp[0])-97)
+        ourboard.enpapiece = ourboard.board[trank][tfile]
+    if(ourboard.currentplayer == "Black"):
+        trank = 8-int(splitenp[1])-1
+        tfile = (ord(splitenp[0])-97)
+        ourboard.enpapiece = ourboard.board[trank][tfile]
+    None
 for letter in Fenstring[4]:
     halfmove = int(letter)
 for letter in Fenstring[5]:
@@ -98,7 +113,7 @@ ourboard.pretty()
 #ourboard.whitecastleQ[0] = "HIIIIIIII"
 for rows in ourboard.board:
     for piece in rows:
-        if(isinstance(piece,Kpieces.King) and (piece.player == ourboard.currentplayer)):
+        if(isinstance(piece,Kpieces.Pawn) and (piece.player == ourboard.currentplayer)):
             piece.actions()
 
 

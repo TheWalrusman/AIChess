@@ -15,6 +15,9 @@ class Board:
         self.prettyenpassant = ""
         self.currentplayer = ""
         self.prettyboard = None
+        self.blackking = None
+        self.whiteKing = None
+        self.enpapiece = None
 
 
     def checkpos(self,inrank,infile):
@@ -24,3 +27,8 @@ class Board:
 
     def pretty(self):
         self.prettyboard = [[y.rep if y.player=="White" else y.rep.lower() for y in x] for x in self.board]
+    
+
+    def movepiece(self,fromrank,fromfile,torank,tofile,special):
+        None
+
