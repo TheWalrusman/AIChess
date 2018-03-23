@@ -8,7 +8,7 @@ import copy
 #ourboard = [[0 for y in range(8)] for x in range(8)]
 ourboard = Kboard.Board()
 Fenstring = "rnbqkbnr/2pppppp/p7/1p7/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"
-Fenstring = "r3k2r/pppppppp/1nbq1bn1/8/8/N1BQ1BN1/PPPPPPPP/R3K2R b KQkq - 0 1"
+Fenstring = "r3k2r/pppppppp/2bq1bn1/8/8/N1Bn1BN1/PPPPPPPP/R1Q1K2R w KQkq - 0 1"
 Fenstring = Fenstring.split()
 rankcount = 0
 filecount = 0
@@ -112,10 +112,11 @@ for letter in Fenstring[5]:
 newboard = copy.deepcopy(ourboard)
 newboard.board[0][0].player = "HIIIIIII"
 ourboard.pretty()
+new_boards = []
 #ourboard.whitecastleQ[0] = "HIIIIIIII"
 for rows in ourboard.board:
     for piece in rows:
-        if(isinstance(piece,Kpieces.King) and (piece.player == ourboard.currentplayer)):
+        if(isinstance(piece,Kpieces.Kpiece) and (piece.player == ourboard.currentplayer)):
             piece.actions()
 
 

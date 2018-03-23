@@ -24,6 +24,7 @@ class Kpiece:
         self.truefile = chr(ord('a')+infile)
         self.player = player
         self.currentboard = board
+        self.capablePs=(Pawn,Knight,Bishop,Rook,Queen)
         
 
 
@@ -179,7 +180,7 @@ class Pawn(Kpiece):
                 #checkforcheck
                 if(not isinstance(self.currentboard.checkpos(self.rank+2,self.file),Kpiece)and (not isinstance(self.currentboard.checkpos(self.rank+1,self.file),Kpiece)) and (self.currentboard.checkpos(self.rank+2,self.file) != None) and not(self.checkcheck(self.rank+2,self.file))):
                     possiblemovesforoutput.append(str("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank-2)))
-                    if((isinstance(self.currentboard.checkpos(self.rank+2,self.file+1),Kpiece)) or (isinstance(self.currentboard.checkpos(self.rank+2,self.file-1),Kpiece))):
+                    if((isinstance(self.currentboard.checkpos(self.rank+2,self.file+1),Kpiece)) and (self.checkcheck(self.rank-2,self.file+1)) or (isinstance(self.currentboard.checkpos(self.rank+2,self.file-1),Kpiece))):
                         newenpassant = (self.rank+1,self.file)
                         nicenewenpassant = (self.truefile+str(self.truerank-1))
                         self.currentboard.enpapiece = self
@@ -212,6 +213,7 @@ class Pawn(Kpiece):
 
 
         None
+    
         return possiblemovesforoutput
 
 
@@ -238,16 +240,17 @@ class Bishop(Kpiece):
         for pair in newmove:
             Brank = pair[0]
             Bfile = pair[1]
-            while (not isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and not(self.checkcheck(self.rank+1,self.file-1)):
+            while (not isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and not(self.checkcheck(self.rank+Brank,self.file+Bfile)):
                 possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
                 Brank += pair[0]
                 Bfile += pair[1]
 
             else:
-                if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player) and not(self.checkcheck(self.rank+1,self.file-1))):
+                if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player) and not(self.checkcheck(self.rank+Brank,self.file+Bfile))):
                     possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
                     None
                 None
+        None
 
 
 
@@ -269,7 +272,7 @@ class Rook(Kpiece):
         for pair in newmove:
             Brank = pair[0]
             Bfile = pair[1]
-            while (not isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None)and not(self.checkcheck(self.rank+1,self.file-1)):
+            while (not isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None)and not(self.checkcheck(self.rank+Brank,self.file+Bfile)):
                 possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
                 Brank += pair[0]
                 Bfile += pair[1]
@@ -277,7 +280,7 @@ class Rook(Kpiece):
                     self.moved[0] = True
 
             else:
-                if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player)and not(self.checkcheck(self.rank+1,self.file-1))):
+                if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),self.capablePs))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player)and not(self.checkcheck(self.rank+Brank,self.file+Bfile))):
                     possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
                     if self.moved[0] == False:
                         self.moved[0] = True
@@ -300,16 +303,17 @@ class Knight(Kpiece):
         for pair in newmove:
             Brank = pair[0]
             Bfile = pair[1]
-            if (not isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and not(self.checkcheck(self.rank+1,self.file-1)):
+            if (not isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and not(self.checkcheck(self.rank+Brank,self.file+Bfile)):
                 possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
                 None
 
             else:
-                if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player) and not(self.checkcheck(self.rank+1,self.file-1))):
+                if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),self.capablePs))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player) and not(self.checkcheck(self.rank+Brank,self.file+Bfile))):
                     possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
                     None
             None
         None
+    
 
 
 class Queen(Kpiece):
@@ -327,13 +331,13 @@ class Queen(Kpiece):
         for pair in newmove:
             Brank = pair[0]
             Bfile = pair[1]
-            while (not isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None)  and not(self.checkcheck(self.rank+1,self.file-1)):
+            while (not isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None)  and not(self.checkcheck(self.rank+Brank,self.file+Bfile)):
                 possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
                 Brank += pair[0]
                 Bfile += pair[1]
 
             else:
-                if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player) and not(self.checkcheck(self.rank+1,self.file-1)) ):
+                if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),self.capablePs))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player) and not(self.checkcheck(self.rank+1,self.file-1)) ):
                     possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
                     None
             None
@@ -404,7 +408,7 @@ class King(Kpiece):
 
                 None
 
-            if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player)):
+            if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),self.capablePs))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player)):
                 possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
                 if self.moved[0] == False:
                     self.moved[0] = True
