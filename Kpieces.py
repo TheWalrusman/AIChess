@@ -31,6 +31,10 @@ class Kpiece:
     def checkcheck(self,torank,tofile):
         savedpiece = self.currentboard.board[torank][tofile]
         self.currentboard.board[torank][tofile] = self
+        oldrank = self.rank
+        oldfile = self.file
+        self.rank = torank
+        self.file = tofile
         self.currentboard.board[self.rank][self.file] = Empty()
         self.currentboard.pretty()
         #pmoves = [(-1,-1),(-1,1)]
@@ -53,8 +57,12 @@ class Kpiece:
         for p in pmoves:
             None
             if(isinstance(self.currentboard.checkpos(King.rank+(p[0]),King.file+(p[1])),Pawn)) and (self.currentboard.board[King.rank+(p[0])][King.file+(p[1])].player not in [self.player,None]):
+                self.currentboard.pretty()
                 self.currentboard.board[torank][tofile] = savedpiece
                 self.currentboard.board[self.rank][self.file] = self
+                self.rank = oldrank
+                self.file = oldfile
+                self.currentboard.pretty()
                 return True
         for n in nmoves:
             None
@@ -62,6 +70,8 @@ class Kpiece:
                 self.currentboard.pretty()
                 self.currentboard.board[torank][tofile] = savedpiece
                 self.currentboard.board[self.rank][self.file] = self
+                self.rank = oldrank
+                self.file = oldfile
                 self.currentboard.pretty()
                 return True
         for qb in qbmoves:
@@ -76,6 +86,8 @@ class Kpiece:
                     self.currentboard.pretty()
                     self.currentboard.board[torank][tofile] = savedpiece
                     self.currentboard.board[self.rank][self.file] = self
+                    self.rank = oldrank
+                    self.file = oldfile
                     self.currentboard.pretty()
                     return True
         for qr in qrmoves:
@@ -90,11 +102,15 @@ class Kpiece:
                     self.currentboard.pretty()
                     self.currentboard.board[torank][tofile] = savedpiece
                     self.currentboard.board[self.rank][self.file] = self
+                    self.rank = oldrank
+                    self.file = oldfile
                     self.currentboard.pretty()
                     return True
         self.currentboard.pretty()
         self.currentboard.board[torank][tofile] = savedpiece
         self.currentboard.board[self.rank][self.file] = self
+        self.rank = oldrank
+        self.file = oldfile
         self.currentboard.pretty()
         return False
         #def undo(self,Old,New,board):
