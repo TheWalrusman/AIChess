@@ -8,7 +8,7 @@ import copy
 #ourboard = [[0 for y in range(8)] for x in range(8)]
 ourboard = Kboard.Board()
 Fenstring = "rnbqkbnr/2pppppp/p7/1p7/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"
-Fenstring = "r3kb1r/1nbq2n1/pppppppp/8/8/PPPPPPPP/1NB2BN1/R2QK2R b KQkq e3 0 1"
+Fenstring = "r6r/1nbqkbn1/1pppppp1/1p6/P7/1PPPPPPP/RNB1KBp1/3Q3R b - e3 0 1"
 Fenstring = Fenstring.split()
 rankcount = 0
 filecount = 0

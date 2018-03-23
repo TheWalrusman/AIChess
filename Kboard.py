@@ -7,10 +7,10 @@ import Kpieces
 class Board:
     def __init__(self):
         self.board = [[Kpieces.Empty() for y in range(8)] for x in range(8)]
-        self.blackcastleQ = False
-        self.blackcastleK = False
-        self.whitecastleQ = False
-        self.whitecastleK = False
+        self.blackcastleQ = [False]
+        self.blackcastleK = [False]
+        self.whitecastleQ = [False]
+        self.whitecastleK = [False]
         self.enpassant = ""
         self.prettyenpassant = ""
         self.currentplayer = ""

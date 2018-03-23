@@ -27,10 +27,6 @@ class Kpiece:
         
 
 
-    def ifmoved(self):
-        if(self.player == "White"):
-
-            None
     
 
 
@@ -47,7 +43,7 @@ class Pawn(Kpiece):
     def checkpromote(self,rank,file):
         if (self.currentboard.currentplayer == "White") and (rank == 0):
             return True
-        elif(self.currentboard.currentplayer == "Black") and (rank == 8):
+        elif(self.currentboard.currentplayer == "Black") and (rank == 7):
             return True
         else:
             return False
@@ -245,9 +241,8 @@ class King(Kpiece):
         
         
 
-    def checkcastle(self):
+    def checkcastle(self,possiblemovesforoutput):
         castle = 2
-        possiblemovesforoutput = []
         direction = []
         if (self.currentboard.currentplayer == "White"):
             if(self.currentboard.whitecastleQ[0] == True ):
@@ -281,7 +276,7 @@ class King(Kpiece):
         possiblemovessimple = []
         newmove = self.movements[:]
         if(self.moved[0] == False):
-            self.checkcastle()
+            self.checkcastle(possiblemovesforoutput)
         for pair in newmove:
             Brank = pair[0]
             Bfile = pair[1]
@@ -308,6 +303,6 @@ class King(Kpiece):
                     elif(self.currentboard.currentplayer == "Black"):
                         self.currentboard.blackcastleQ[0] = True
                         self.currentboard.blackcastleK[0] = True
-                None
+        None
 
             
