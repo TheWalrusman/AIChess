@@ -1,5 +1,6 @@
 import Kboard
 import Kpieces
+import copy
 
 
 
@@ -7,7 +8,7 @@ import Kpieces
 #ourboard = [[0 for y in range(8)] for x in range(8)]
 ourboard = Kboard.Board()
 Fenstring = "rnbqkbnr/2pppppp/p7/1p7/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"
-Fenstring = "1nbqkbnr/Ppp3pp/1pr5/4p3/3pPp2/8/1PPP1PPP/RNBQKBNR b KQkq e3 0 1"
+Fenstring = "r3kb1r/1nbq2n1/pppppppp/8/8/PPPPPPPP/1NB2BN1/R2QK2R b KQkq e3 0 1"
 Fenstring = Fenstring.split()
 rankcount = 0
 filecount = 0
@@ -69,16 +70,20 @@ for letter in Fenstring[1]:
 for letter in Fenstring[2]:
     if letter in 'Q':
         whitecastle.append(letter.upper())
-        ourboard.whitecastleQ = "Q"
+        ourboard.whitecastleQ = [True]
+        ourboard.board[7][0].moved = ourboard.whitecastleQ
     elif letter in 'K':
         whitecastle.append(letter.upper())
-        ourboard.whitecastleK = "K"
+        ourboard.whitecastleK = [True]
+        ourboard.board[7][7].moved = ourboard.whitecastleK
     elif letter in 'q':
         blackcastle.append(letter.upper())
-        ourboard.blackcastleQ = "Q"
+        ourboard.blackcastleQ = [True]
+        ourboard.board[0][0].moved = ourboard.blackcastleQ
     elif letter in 'k':
         blackcastle.append(letter.upper())
-        ourboard.blackcastleK = "K"
+        ourboard.blackcastleK = [True]
+        ourboard.board[0][7].moved = ourboard.blackcastleK
 for letter in Fenstring[3]:
     enpassant += letter
     ourboard.enpassant += letter
@@ -87,9 +92,13 @@ for letter in Fenstring[4]:
 for letter in Fenstring[5]:
     fullmove = int(letter)
 
+newboard = copy.deepcopy(ourboard)
+newboard.board[0][0].player = "HIIIIIII"
+ourboard.pretty()
+#ourboard.whitecastleQ[0] = "HIIIIIIII"
 for rows in ourboard.board:
     for piece in rows:
-        if(isinstance(piece,Kpieces.Pawn) and (piece.player == ourboard.currentplayer)):
+        if(isinstance(piece,Kpieces.King) and (piece.player == ourboard.currentplayer)):
             piece.actions()
 
 

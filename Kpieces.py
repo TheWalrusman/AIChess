@@ -24,8 +24,14 @@ class Kpiece:
         self.truefile = chr(ord('a')+infile)
         self.player = player
         self.currentboard = board
-    
+        
 
+
+    def ifmoved(self):
+        if(self.player == "White"):
+
+            None
+    
 
 
 
@@ -152,6 +158,8 @@ class Rook(Kpiece):
         self.type = intype
         self.movements = [(1,0),(-1,0),(0,1),(0,-1)]
         self.rep = "R"
+        self.moved = [True]
+        
 
     def actions(self):
         possiblemovesforoutput = []
@@ -164,10 +172,14 @@ class Rook(Kpiece):
                 possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
                 Brank += pair[0]
                 Bfile += pair[1]
+                if self.moved[0] == False:
+                    self.moved[0] = True
 
             else:
                 if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player)):
                     possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
+                    if self.moved[0] == False:
+                        self.moved[0] = True
                     None
                 None
 
@@ -229,21 +241,73 @@ class King(Kpiece):
         self.type = intype
         self.movements = [(1,1),(1,-1),(-1,1),(-1,-1),(1,0),(-1,0),(0,1),(0,-1)]
         self.rep = "K"
+        self.moved = [False]
+        
+        
+
+    def checkcastle(self):
+        castle = 2
+        possiblemovesforoutput = []
+        direction = []
+        if (self.currentboard.currentplayer == "White"):
+            if(self.currentboard.whitecastleQ[0] == True ):
+                direction.append(-1)
+            if(self.currentboard.whitecastleK[0] == True ):
+                direction.append(1)
+        if (self.currentboard.currentplayer == "Black"):
+            if(self.currentboard.blackcastleQ[0] == True ):
+                direction.append(-1)
+            if(self.currentboard.blackcastleK[0] == True ):
+                direction.append(1)
+        for side in direction:
+            count = side
+            while (not isinstance(self.currentboard.checkpos(self.rank,self.file+count),Kpiece))  and (self.currentboard.checkpos(self.rank,self.file+count) != None) and (abs(count) < 3):
+                        if(abs(count) == 2) :
+                            None
+                            possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+count)+str(self.truerank)  )
+                        else:
+                            None
+                            possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+count)+str(self.truerank)  )
+                        count += side 
+
+            
+
+        None
+
 
 
     def actions(self):
         possiblemovesforoutput = []
         possiblemovessimple = []
         newmove = self.movements[:]
+        if(self.moved[0] == False):
+            self.checkcastle()
         for pair in newmove:
             Brank = pair[0]
             Bfile = pair[1]
             if (not isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None):
                 possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
+                if self.moved[0] == False:
+                    self.moved[0] = True
+                    if(self.currentboard.currentplayer == "White"):
+                        self.currentboard.whitecastleQ[0] = True
+                        self.currentboard.whitecastleK[0] = True
+                    elif(self.currentboard.currentplayer == "Black"):
+                        self.currentboard.blackcastleQ[0] = True
+                        self.currentboard.blackcastleK[0] = True
+
                 None
 
-            else:
-                if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player)):
-                    possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
-                    None
+            if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player)):
+                possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
+                if self.moved[0] == False:
+                    self.moved[0] = True
+                    if(self.currentboard.currentplayer == "White"):
+                        self.currentboard.whitecastleQ[0] = True
+                        self.currentboard.whitecastleK[0] = True
+                    elif(self.currentboard.currentplayer == "Black"):
+                        self.currentboard.blackcastleQ[0] = True
+                        self.currentboard.blackcastleK[0] = True
                 None
+
+            
