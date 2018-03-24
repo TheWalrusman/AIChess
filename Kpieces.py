@@ -337,7 +337,7 @@ class Queen(Kpiece):
                 Bfile += pair[1]
 
             else:
-                if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),self.capablePs))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player) and not(self.checkcheck(self.rank+1,self.file-1)) ):
+                if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),self.capablePs))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player) and not(self.checkcheck(self.rank+Brank,self.file+Bfile)) ):
                     possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
                     None
             None
