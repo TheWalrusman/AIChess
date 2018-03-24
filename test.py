@@ -1,15 +1,27 @@
 import Kboard
 import Kpieces
 import copy
+<<<<<<< HEAD
 import BuildFEN
+=======
+import time
+
+>>>>>>> 29602dc1d3073a9dd94a7ade7f804b49ab3652fe
 
 
 
 #ourboard = [[0 for y in range(8)] for x in range(8)]
 ourboard = Kboard.Board()
+<<<<<<< HEAD
 Fenstrings = "rnbqkbnr/2pppppp/p7/1p7/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"
 Fenstrings = "r3k2r/pppppppp/2bq1bn1/8/8/N1Bn1BN1/PPPPPPPP/R1Q1K2R w KQkq - 0 1"
 Fenstrings = Fenstrings.split()
+=======
+
+Fenstring = "rnbqkbnr/2pppppp/p7/1p7/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"
+Fenstring = "r3k2r/pppppppp/2bq1bn1/8/8/N1Bn1BN1/PPPPPPPP/R1Q1K2R w KQkq - 0 1"
+Fenstring = Fenstring.split()
+>>>>>>> 29602dc1d3073a9dd94a7ade7f804b49ab3652fe
 rankcount = 0
 filecount = 0
 ilist = [0,1,2,3,4,5,6,7,8]
@@ -126,6 +138,7 @@ for Fenstring in tlist:
     for letter in Fenstring[5]:
         fullmove = int(letter)
 
+<<<<<<< HEAD
     newboard = copy.deepcopy(ourboard)
     newboard.board[0][0].player = "HIIIIIII"
     ourboard.pretty()
@@ -136,6 +149,20 @@ for Fenstring in tlist:
             for piece in rows:
                 if(isinstance(piece,Kpieces.Kpiece) and (piece.player == ourboard.currentplayer)):
                     piece.actions()
+=======
+newboard = copy.deepcopy(ourboard)
+newboard.board[0][0].player = "HIIIIIII"
+ourboard.pretty()
+new_boards = []
+#ourboard.whitecastleQ[0] = "HIIIIIIII"
+starttime =time.perf_counter()
+for rows in ourboard.board:
+    for piece in rows:
+        if(isinstance(piece,Kpieces.Kpiece) and (piece.player == ourboard.currentplayer)):
+            piece.actions()
+>>>>>>> 29602dc1d3073a9dd94a7ade7f804b49ab3652fe
 
-
+endtime = time.perf_counter()
+finish = endtime-starttime
+print(finish)
 None
