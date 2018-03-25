@@ -26,7 +26,11 @@ class Kpiece:
         self.currentboard = board
         self.capablePs=(Pawn,Knight,Bishop,Rook,Queen)
         
-
+    def update(self,R,F):
+        self.rank = R
+        self.truerank = 8-R
+        self.file = F
+        self.truefile = chr(ord('a')+F)
 
     def checkcheck(self,torank,tofile):
         savedpiece = self.currentboard.board[torank][tofile]
