@@ -201,7 +201,7 @@ class Pawn(Kpiece):
                 newnodes.append(Newboard)
                 if(self.checkpromote(self.rank-1,self.file)):
                     possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank+1)+" With Promotion: "+str(random.choice(self.possiblepromotes)))
-                    Newboard.movepiece(self.rank,self.file,self.rank-1,self.file,(1))
+                    Newboard.movepiece(self.rank,self.file,self.rank-1,self.file,(1,0))
                 else:
                     possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank+1))
                     Newboard.movepiece(self.rank,self.file,self.rank-1,self.file)
@@ -211,7 +211,7 @@ class Pawn(Kpiece):
                 newnodes.append(Newboard)
                 if(self.checkpromote(self.rank-1,self.file-1)):
                     possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)-1)+str(self.truerank+1)+" With Promotion: "+str(random.choice(self.possiblepromotes)))
-                    Newboard.movepiece(self.rank,self.file,self.rank-1,self.file-1,(1))
+                    Newboard.movepiece(self.rank,self.file,self.rank-1,self.file-1,(1,0))
                 else:
                     possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)-1)+str(self.truerank+1))
                     Newboard.movepiece(self.rank,self.file,self.rank-1,self.file-1)
@@ -221,7 +221,7 @@ class Pawn(Kpiece):
                 newnodes.append(Newboard)
                 if(self.checkpromote(self.rank-1,self.file+1)):
                     possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)+1)+str(self.truerank+1)+" With Promotion: "+str(random.choice(self.possiblepromotes)))
-                    Newboard.movepiece(self.rank,self.file,self.rank-1,self.file+1,(1))
+                    Newboard.movepiece(self.rank,self.file,self.rank-1,self.file+1,(1,0))
                 else:
                     possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ chr(ord(self.truefile)+1)+str(self.truerank+1))
                     Newboard.movepiece(self.rank,self.file,self.rank-1,self.file+1)

@@ -28,9 +28,9 @@ fullmove = 0
 ##BigList2 = [BuildFEN.start(x) for x in BigList]
 
 tlist = ["n1N4R/3kPBn1/1qp3Qr/1pB1K1P1/PPP1p3/p2p3r/RpPNpPpP/4bb2 w - - 0 1","8/Ppp2Bp1/PB3p2/K2ppk2/bQP1nPn1/PpPRr3/1P1RpNPr/b2N2q1 w - - 0 1","1k1B1b1n/1PrPp1Qp/qrp2pb1/1pn4p/NKR4p/RPPP1B1P/P1p1P3/2N5 w - - 0 1","6N1/1Pn1P1N1/1rq1Qp1P/1PPpppp1/1Rpn3r/kP2bbPR/2B1p1Pp/B3K3 w - - 0 1"]
-basicl = ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"]
+basicl = ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"]
 tstarttime =time.perf_counter()
-for Fenstring in basicl:
+for Fenstring in tlist:
     Fenstring = Fenstring.split()
     ourboard = Kboard.Board()
     rankcount = 0
@@ -144,13 +144,13 @@ for Fenstring in basicl:
 
 
 
-    for color in ["White","Black"]:
-        for rows in ourboard.board:
-            for piece in rows:
-                if(isinstance(piece,Kpieces.Kpiece) and (piece.player == ourboard.currentplayer)):
-                    new_boards.extend( piece.actions())
-                    None
-        None
+    #for color in ["White","Black"]:
+    for rows in ourboard.board:
+        for piece in rows:
+            if(isinstance(piece,Kpieces.Kpiece) and (piece.player == ourboard.currentplayer)):
+                new_boards.extend( piece.actions())
+                None
+    None
     startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
     #endresult = MiniMax()
 
