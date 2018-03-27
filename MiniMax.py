@@ -38,10 +38,10 @@ def minimax(self,node,depth,MaxorMin,value = None):
         for rows in self.board:
             for piece in rows:
                 if(isinstance(piece,Kpieces.Kpiece) and (piece.player == self.currentplayer)):
-                    newnodes = piece.action()
-                    for node in newnodes:
-                        tmpval = self.minimax(newnode,depth-1,False)
-                        bestval = min(bestval,tmpval)
+                    newnodes += piece.action()
+                for node in newnodes:
+                    tmpval = self.minimax(newnode,depth-1,False)
+                    bestval = min(bestval,tmpval)
                 return bestval
     
                 

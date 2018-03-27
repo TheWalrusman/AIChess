@@ -39,9 +39,10 @@ class Kpiece:
         self.currentboard.board[torank][tofile] = self
         oldrank = self.rank
         oldfile = self.file
+        self.currentboard.board[self.rank][self.file] = Empty()
         self.rank = torank
         self.file = tofile
-        self.currentboard.board[self.rank][self.file] = Empty()
+        
         self.currentboard.pretty()
         #pmoves = [(-1,-1),(-1,1)]
         nmoves = [(2,1),(2,-1),(-2,1),(-2,-1),(1,2),(-1,2),(1,-2),(-1,-2)]#knight Moves
@@ -65,9 +66,10 @@ class Kpiece:
             if(isinstance(self.currentboard.checkpos(King.rank+(p[0]),King.file+(p[1])),Pawn)) and (self.currentboard.board[King.rank+(p[0])][King.file+(p[1])].player not in [self.player,None]):
                 self.currentboard.pretty()
                 self.currentboard.board[torank][tofile] = savedpiece
-                self.currentboard.board[self.rank][self.file] = self
                 self.rank = oldrank
                 self.file = oldfile
+                self.currentboard.board[self.rank][self.file] = self
+                
                 self.currentboard.pretty()
                 return True
         for n in nmoves:
@@ -75,6 +77,8 @@ class Kpiece:
             if( (isinstance(self.currentboard.checkpos(King.rank+n[0],King.file+n[1]),Knight))  and (self.currentboard.board[King.rank+n[0]][King.file+n[1]].player not in [self.player,None])  ):
                 self.currentboard.pretty()
                 self.currentboard.board[torank][tofile] = savedpiece
+                self.rank = oldrank
+                self.file = oldfile
                 self.currentboard.board[self.rank][self.file] = self
                 self.rank = oldrank
                 self.file = oldfile
@@ -91,6 +95,8 @@ class Kpiece:
                 if(  (isinstance(self.currentboard.checkpos(King.rank+incrank,King.file+incfile),(Queen,Bishop))) and  (self.currentboard.checkpos(King.rank+incrank,King.file+incfile) != None) and (self.currentboard.board[King.rank+incrank][King.file+incfile].player not in [self.player,None])  ):
                     self.currentboard.pretty()
                     self.currentboard.board[torank][tofile] = savedpiece
+                    self.rank = oldrank
+                    self.file = oldfile
                     self.currentboard.board[self.rank][self.file] = self
                     self.rank = oldrank
                     self.file = oldfile
@@ -107,6 +113,8 @@ class Kpiece:
                 if(  (isinstance(self.currentboard.checkpos(King.rank+incrank,King.file+incfile),(Queen,Rook))) and  (self.currentboard.checkpos(King.rank+incrank,King.file+incfile) != None) and (self.currentboard.board[King.rank+incrank][King.file+incfile].player not in [self.player,None])  ):
                     self.currentboard.pretty()
                     self.currentboard.board[torank][tofile] = savedpiece
+                    self.rank = oldrank
+                    self.file = oldfile
                     self.currentboard.board[self.rank][self.file] = self
                     self.rank = oldrank
                     self.file = oldfile
@@ -114,6 +122,8 @@ class Kpiece:
                     return True
         self.currentboard.pretty()
         self.currentboard.board[torank][tofile] = savedpiece
+        self.rank = oldrank
+        self.file = oldfile
         self.currentboard.board[self.rank][self.file] = self
         self.rank = oldrank
         self.file = oldfile
@@ -148,6 +158,9 @@ class Pawn(Kpiece):
         self.rep = "P"
         self.score = 1
         
+    def copy(self):
+        tmp = Pawn()
+
 
     def checkpromote(self,rank,file):
         if (self.currentboard.currentplayer == "White") and (rank == 0):
@@ -166,16 +179,19 @@ class Pawn(Kpiece):
             if(self.rank == 6):
                 #checkforcheck
                 if((not isinstance(self.currentboard.checkpos(self.rank-2,self.file),Kpiece)) and (not isinstance(self.currentboard.checkpos(self.rank-1,self.file),Kpiece)) and (self.currentboard.checkpos(self.rank-2,self.file) != None)     and not (self.checkcheck(self.rank-2,self.file)) ):
-                    possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank+2))
+                    #possiblemovesforoutput.append("White Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank+2))
+                    print("h")
+                    None
                     Newboard = copy.deepcopy(self.currentboard)
+                    None
                     newnodes.append(Newboard)
-                    if((isinstance(self.currentboard.checkpos(self.rank-2,self.file+1),Kpiece) or (isinstance(self.currentboard.checkpos(self.rank-2,self.file-1),Kpiece))) and (self.checkcheck(self.rank-2,self.file+1))):
-                        newenpassant = (self.rank-1,self.file)
-                        Newboard.enpassant = (self.truefile+str(self.truerank+1))
-                        Newboard.enpapiece = Newboard.board[self.rank][self.file]
-                        #self.currentboard.enpapiece = self
-                        #self.currentboard.empassant = (self.rank-1,self.file)
-                        #newstate = self.currentboard.movepiece(self.rank,self.file,)
+                    #if((isinstance(self.currentboard.checkpos(self.rank-2,self.file+1),Kpiece) or (isinstance(self.currentboard.checkpos(self.rank-2,self.file-1),Kpiece))) and (self.checkcheck(self.rank-2,self.file+1))):
+                    newenpassant = (self.rank-1,self.file)
+                    Newboard.enpassant = (self.truefile+str(self.truerank+1))
+                    Newboard.enpapiece = Newboard.board[self.rank][self.file]
+                    #self.currentboard.enpapiece = self
+                    #self.currentboard.empassant = (self.rank-1,self.file)
+                    #newstate = self.currentboard.movepiece(self.rank,self.file,)
                     Newboard.movepiece(self.rank,self.file,self.rank-2,self.file)
 
                     None
@@ -230,12 +246,12 @@ class Pawn(Kpiece):
                     Newboard = copy.deepcopy(self.currentboard)
                     newnodes.append(Newboard)
                     possiblemovesforoutput.append(str("Black Pawn from "+self.truefile+str(self.truerank) +" to "+ (self.truefile)+str(self.truerank-2)))
-                    if((isinstance(self.currentboard.checkpos(self.rank+2,self.file+1),Kpiece)  or (isinstance(self.currentboard.checkpos(self.rank+2,self.file-1),Kpiece))) and (self.checkcheck(self.rank-2,self.file+1))):
-                        newenpassant = (self.rank+1,self.file)
-                        nicenewenpassant = (self.truefile+str(self.truerank-1))
-                        #self.currentboard.enpapiece = self
-                        Newboard.enpassant = (self.truefile+str(self.truerank-1))
-                        Newboard.enpapiece = Newboard.board[self.rank][self.file]
+                    #if((isinstance(self.currentboard.checkpos(self.rank+2,self.file+1),Kpiece)  or (isinstance(self.currentboard.checkpos(self.rank+2,self.file-1),Kpiece))) and (self.checkcheck(self.rank-2,self.file+1))):
+                    newenpassant = (self.rank+1,self.file)
+                    nicenewenpassant = (self.truefile+str(self.truerank-1))
+                    #self.currentboard.enpapiece = self
+                    Newboard.enpassant = (self.truefile+str(self.truerank-1))
+                    Newboard.enpapiece = Newboard.board[self.rank][self.file]
                     Newboard.movepiece(self.rank,self.file,self.rank+2,self.file)
                     None
 
@@ -308,20 +324,29 @@ class Bishop(Kpiece):
         possiblemovesforoutput = []
         possiblemovessimple = []
         newmove = self.movements[:]
+        newnodes = []
         for pair in newmove:
             Brank = pair[0]
             Bfile = pair[1]
             while (not isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and not(self.checkcheck(self.rank+Brank,self.file+Bfile)):
                 possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
+                Newboard = copy.deepcopy(self.currentboard)
+                newnodes.append(Newboard)
+                Newboard.movepiece(self.rank,self.file,self.rank+Brank,self.file+Bfile)
                 Brank += pair[0]
                 Bfile += pair[1]
+                
 
             else:
                 if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player) and not(self.checkcheck(self.rank+Brank,self.file+Bfile))):
                     possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
+                    Newboard = copy.deepcopy(self.currentboard)
+                    newnodes.append(Newboard)
+                    Newboard.movepiece(self.rank,self.file,self.rank+Brank,self.file+Bfile)
                     None
                 None
         None
+        return newnodes
 
 
 
@@ -340,24 +365,33 @@ class Rook(Kpiece):
         possiblemovesforoutput = []
         possiblemovessimple = []
         newmove = self.movements[:]
+        newnodes = []
         for pair in newmove:
             Brank = pair[0]
             Bfile = pair[1]
             while (not isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None)and not(self.checkcheck(self.rank+Brank,self.file+Bfile)):
                 possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
+                Newboard = copy.deepcopy(self.currentboard)
+                newnodes.append(Newboard)
+                if Newboard.board[self.rank][self.file].moved[0] == False:
+                    Newboard.board[self.rank][self.file].moved[0] = True
+                Newboard.movepiece(self.rank,self.file,self.rank+Brank,self.file+Bfile)
                 Brank += pair[0]
                 Bfile += pair[1]
-                if self.moved[0] == False:
-                    self.moved[0] = True
+               
 
             else:
                 if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),self.capablePs))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player)and not(self.checkcheck(self.rank+Brank,self.file+Bfile))):
                     possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
-                    if self.moved[0] == False:
-                        self.moved[0] = True
+                    Newboard = copy.deepcopy(self.currentboard)
+                    newnodes.append(Newboard)
+                    if Newboard.board[self.rank][self.file].moved[0] == False:
+                        Newboard.board[self.rank][self.file].moved[0] = True
+                    Newboard.movepiece(self.rank,self.file,self.rank+Brank,self.file+Bfile)
                     None
             None
         None
+        return newnodes
 
 class Knight(Kpiece):
     def __init__(self,inrank,infile,player,intype,board):
@@ -371,19 +405,27 @@ class Knight(Kpiece):
         possiblemovesforoutput = []
         possiblemovessimple = []
         newmove = self.movements[:]
+        newnodes = []
         for pair in newmove:
             Brank = pair[0]
             Bfile = pair[1]
             if (not isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and not(self.checkcheck(self.rank+Brank,self.file+Bfile)):
                 possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
+                Newboard = copy.deepcopy(self.currentboard)
+                newnodes.append(Newboard)
+                Newboard.movepiece(self.rank,self.file,self.rank+Brank,self.file+Bfile)
                 None
 
             else:
                 if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),self.capablePs))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player) and not(self.checkcheck(self.rank+Brank,self.file+Bfile))):
                     possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
+                    Newboard = copy.deepcopy(self.currentboard)
+                    newnodes.append(Newboard)
+                    Newboard.movepiece(self.rank,self.file,self.rank+Brank,self.file+Bfile)
                     None
             None
         None
+        return newnodes
     
 
 
@@ -399,20 +441,28 @@ class Queen(Kpiece):
         possiblemovesforoutput = []
         possiblemovessimple = []
         newmove = self.movements[:]
+        newnodes = []
         for pair in newmove:
             Brank = pair[0]
             Bfile = pair[1]
             while (not isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None)  and not(self.checkcheck(self.rank+Brank,self.file+Bfile)):
                 possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
+                Newboard = copy.deepcopy(self.currentboard)
+                newnodes.append(Newboard)
+                Newboard.movepiece(self.rank,self.file,self.rank+Brank,self.file+Bfile)
                 Brank += pair[0]
                 Bfile += pair[1]
 
             else:
                 if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),self.capablePs))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player) and not(self.checkcheck(self.rank+Brank,self.file+Bfile)) ):
                     possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
+                    Newboard = copy.deepcopy(self.currentboard)
+                    newnodes.append(Newboard)
+                    Newboard.movepiece(self.rank,self.file,self.rank+Brank,self.file+Bfile)
                     None
             None
         None
+        return newnodes
 
 
 
@@ -430,9 +480,12 @@ class King(Kpiece):
     def checkcastle(self,possiblemovesforoutput):
         castle = 2
         direction = []
+        newnodes = []
+       
         if (self.currentboard.currentplayer == "White"):
             if(self.currentboard.whitecastleQ[0] == True ):
                 direction.append((-1,4))
+                
             if(self.currentboard.whitecastleK[0] == True ):
                 direction.append((1,3))
         if (self.currentboard.currentplayer == "Black"):
@@ -446,6 +499,18 @@ class King(Kpiece):
                         if(abs(count) == side[1]-1) :
                             None
                             possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+side[0]+side[0])+str(self.truerank)+" CASLTING"  )
+                            Newboard = copy.deepcopy(self.currentboard)
+                            newnodes.append(Newboard)
+                            Newboard.board[self.rank][self.file].moved[0] = True
+                            if(Newboard.currentplayer == "White"):
+                                Newboard.whitecastleQ[0] = False
+                                Newboard.whitecastleK[0] = False
+                            elif(Newboard.currentplayer == "Black"):
+                                Newboard.blackcastleQ[0] = False
+                                Newboard.blackcastleK[0] = False
+                            Newboard.movepiece(self.rank,self.file,self.rank,self.file+(side[0]+side[0],(3,self.file,side[0]*side[1],self.file,side[0]+side[0]+side[0])))
+
+                        
                         else:
                             None
                             #possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+count)+str(self.truerank)  )
@@ -454,6 +519,8 @@ class King(Kpiece):
             
 
         None
+        
+        return newnodes
 
 
 
@@ -461,34 +528,47 @@ class King(Kpiece):
         possiblemovesforoutput = []
         possiblemovessimple = []
         newmove = self.movements[:]
+        newnodes = []
         if(self.moved[0] == False):
-            self.checkcastle(possiblemovesforoutput)
+            tmpval = self.checkcastle(possiblemovesforoutput)
+            if tmpval:
+                newnodes.append(tmpval)
         for pair in newmove:
             Brank = pair[0]
             Bfile = pair[1]
             if (not isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),Kpiece))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None):
                 possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
-                if self.moved[0] == False:
-                    self.moved[0] = True
-                    if(self.currentboard.currentplayer == "White"):
-                        self.currentboard.whitecastleQ[0] = True
-                        self.currentboard.whitecastleK[0] = True
-                    elif(self.currentboard.currentplayer == "Black"):
-                        self.currentboard.blackcastleQ[0] = True
-                        self.currentboard.blackcastleK[0] = True
+                Newboard = copy.deepcopy(self.currentboard)
+                newnodes.append(Newboard)
+                if Newboard.board[self.rank][self.file].moved[0] == False:
+                    Newboard.board[self.rank][self.file].moved[0] = True
+                
+                    if(Newboard.currentplayer == "White"):
+                        Newboard.whitecastleQ[0] = False
+                        Newboard.whitecastleK[0] = False
+                    elif(Newboard.currentplayer == "Black"):
+                        Newboard.blackcastleQ[0] = False
+                        Newboard.blackcastleK[0] = False
+                Newboard.movepiece(self.rank,self.file,self.rank+Brank,self.file+Bfile)
 
                 None
 
             if ((isinstance(self.currentboard.checkpos(self.rank+Brank,self.file+Bfile),self.capablePs))  and (self.currentboard.checkpos(self.rank+Brank,self.file+Bfile) != None) and (self.player != self.currentboard.checkpos(self.rank+Brank,self.file+Bfile).player)):
                 possiblemovesforoutput.append(  self.player + " "+ self.type +" from " +self.truefile+str(self.truerank)+ " to "+ chr(ord(self.truefile)+Bfile)+str(self.truerank-Brank)  )
-                if self.moved[0] == False:
-                    self.moved[0] = True
-                    if(self.currentboard.currentplayer == "White"):
-                        self.currentboard.whitecastleQ[0] = True
-                        self.currentboard.whitecastleK[0] = True
-                    elif(self.currentboard.currentplayer == "Black"):
-                        self.currentboard.blackcastleQ[0] = True
-                        self.currentboard.blackcastleK[0] = True
+                Newboard = copy.deepcopy(self.currentboard)
+                newnodes.append(Newboard)
+                if Newboard.board[self.rank][self.file].moved[0] == False:
+                    Newboard.board[self.rank][self.file].moved[0] = True
+                
+                    if(Newboard.currentplayer == "White"):
+                        Newboard.whitecastleQ[0] = False
+                        Newboard.whitecastleK[0] = False
+                    elif(Newboard.currentplayer == "Black"):
+                        Newboard.blackcastleQ[0] = False
+                        Newboard.blackcastleK[0] = False
+                Newboard.movepiece(self.rank,self.file,self.rank+Brank,self.file+Bfile)
         None
+        #if(newnodes =! [])
+        return newnodes
 
             

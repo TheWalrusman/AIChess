@@ -134,6 +134,7 @@ for Fenstring in basicl:
 
     newboard = copy.deepcopy(ourboard)
     newboard.board[0][0].player = "HIIIIIII"
+    newboard.blackcastleQ = "flase"
     ourboard.pretty()
     new_boards = []
     #ourboard.whitecastleQ[0] = "HIIIIIIII"
@@ -148,7 +149,8 @@ for Fenstring in basicl:
             for piece in rows:
                 if(isinstance(piece,Kpieces.Kpiece) and (piece.player == ourboard.currentplayer)):
                     new_boards.extend( piece.actions())
-                    None  
+                    None
+        None
     startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
     #endresult = MiniMax()
 

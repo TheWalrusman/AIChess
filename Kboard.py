@@ -21,6 +21,11 @@ class Board:
         self.enpapiece = None
         self.lastmoves = []
 
+    def copy(self):
+        tmp = Board()
+        tmp.board = "HI"
+
+
     def stalecheck(self,mset):
         if len(self.lastmoves == 8):
             self.lastmoves.pop(obj = self.lastmoves[0])
@@ -64,15 +69,18 @@ class Board:
             self.board[fromrank][fromfile] = Kpieces.Empty()
             self.board[torank][tofile] = ftmp
             ftmp.update(torank,tofile)
+            self.pretty()
         elif(special[0] == 1):#Promotion
             self.board[fromrank][fromfile] = Kpieces.Empty()
             Ptmp = Kpieces.Queen(tofile,torank,ftmp.player,"Queen",self)
             self.board[torank][tofile] = Ptmp
+            self.pretty()
         elif(special[0] == 2):#Enpassant
             self.board[fromrank][fromfile] = Kpieces.Empty()
             self.board[special[1]][special[2]] = Kpieces.Empty() 
             self.board[torank][tofile] = ftmp
             ftmp.update(torank,tofile)
+            self.pretty()
         elif(special[0] == 3):#Castling
             Rooktmp = self.board[special[1]][special[2]]
             self.board[fromrank][fromfile] = Kpieces.Empty()
@@ -81,6 +89,7 @@ class Board:
             ftmp.update(torank,tofile)
             self.board[special[3]][special[4]] = Rooktmp
             Rooktmp.update(special[3],special[4])
+            self.pretty()
         
 
 
