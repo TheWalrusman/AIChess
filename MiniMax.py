@@ -20,31 +20,48 @@
 minimax(origin, depth, TRUE)
  """
 import Kpieces
-def minimax(self,board,depth,MaxorMin,value = None):
+def minimax(board,depth,startdepth,MaxorMin,value = None):
     new_boards = []
     if (depth == 0) or (value != None) or (board.stalecheck()):
-        return board.currentboard.currentmat("White")
+        if(board.stalecheck()):
+            return (0,board.currmove)
+        else:
+            return (board.currentmat("White"),board.currmove)
 
     if(MaxorMin == True):
-        bestval = -100000000000
-        for rows in self.board:
+        bestval = (-100000000000,None)
+        for rows in board.board:
             for piece in rows:
-                if(isinstance(piece,Kpieces.Kpiece) and (piece.player == self.currentplayer)):
-                    new_boards.extend(piece.action())
+                if(isinstance(piece,Kpieces.Kpiece) and (piece.player == board.currentplayer)):
+                    new_boards.extend(piece.actions())
+        if(not new_boards ):
+            return (-1000,board.currmove)
         for node in new_boards:
-            tmpval = self.minimax(node,depth-1,False)
-            bestval = max(bestval,tmpval)
-        return bestval
+            tmpval = minimax(node,depth-1,startdepth,False)
+            tmptup = [bestval,tmpval]
+            bestval = max(tmptup, key=lambda t: (t[0]))
+            #bestval = max(bestval,tmpval)
+        if(depth == startdepth):
+            return bestval
+        else:
+            return (bestval[0],board.currmove)
     if(MaxorMin == False):
-        bestval = 100000000000
-        for rows in self.board:
+        bestval = (100000000000,None)
+        for rows in board.board:
             for piece in rows:
-                if(isinstance(piece,Kpieces.Kpiece) and (piece.player == self.currentplayer)):
-                    new_boards.extend(piece.action())
+                if(isinstance(piece,Kpieces.Kpiece) and (piece.player == board.currentplayer)):
+                    new_boards.extend(piece.actions())
+        if(not new_boards ):
+            return (1000,board.currmove)
         for node in new_boards:
-            tmpval = self.minimax(node,depth-1,True)
-            bestval = min(bestval,tmpval)
-        return bestval
+            tmpval = minimax(node,depth-1,startdepth,True)
+            tmptup = [bestval,tmpval]
+            bestval = min(tmptup, key=lambda t: (t[0]))
+            #bestval = min(bestval,tmpval)
+        if(depth == startdepth):
+            return bestval
+        else:
+            return (bestval[0],board.currmove)
     
                 
     

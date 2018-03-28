@@ -36,8 +36,9 @@ class Board:
             self.lastmoves.extend(move)
 
     def stalecheck(self):
+        samemoves = 0
         if len(self.lastmoves) >= 8:
-            samemoves = 0
+            
             for x in range(0,4,1):
                 if(self.lastmoves[x] == self.lastmoves[x+4]):
                     samemoves += 1
@@ -62,9 +63,9 @@ class Board:
             color = self.currentplayer
         for row in self.board:
             for piece in row:
-                if((color == piece.player) and (isinstance(piece,Kpieces))):
+                if((color == piece.player) and (isinstance(piece,Kpieces.Kpiece))):
                     maxmat += piece.score
-                elif(((color != piece.player) and (isinstance(piece,Kpieces)))):
+                elif(((color != piece.player) and (isinstance(piece,Kpieces.Kpiece)))):
                     minmat += piece.score
         if(self.stalecheck()):
             return 0
@@ -109,6 +110,9 @@ class Board:
         
 
 
-
+        if self.currentplayer == "White":
+            self.currentplayer = "Black"
+        elif self.currentplayer == "Black":
+            self.currentplayer = "White"
         None
 

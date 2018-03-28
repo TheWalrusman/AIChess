@@ -5,8 +5,10 @@ import BuildFEN
 import time
 import MiniMax
 
-
-
+bestval = (100,"HI","YOLO")
+tmpval = (5,"YO","HIFIFFK")
+tmptup = [bestval,tmpval]
+val = max(tmptup, key=lambda t: (t[0]))
 
 #ourboard = [[0 for y in range(8)] for x in range(8)]
 ourboard = Kboard.Board()
@@ -29,8 +31,9 @@ fullmove = 0
 
 tlist = ["n1N4R/3kPBn1/1qp3Qr/1pB1K1P1/PPP1p3/p2p3r/RpPNpPpP/4bb2 w - - 0 1","8/Ppp2Bp1/PB3p2/K2ppk2/bQP1nPn1/PpPRr3/1P1RpNPr/b2N2q1 w - - 0 1","1k1B1b1n/1PrPp1Qp/qrp2pb1/1pn4p/NKR4p/RPPP1B1P/P1p1P3/2N5 w - - 0 1","6N1/1Pn1P1N1/1rq1Qp1P/1PPpppp1/1Rpn3r/kP2bbPR/2B1p1Pp/B3K3 w - - 0 1"]
 basicl = ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"]
+basic2 = ["rnbqkbnr/pppppppp/1N6/8/8/8/PPPPPPPP/R1BQKBNR w KQkq - 0 1"]
 tstarttime =time.perf_counter()
-for Fenstring in tlist:
+for Fenstring in basic2:
     Fenstring = Fenstring.split()
     ourboard = Kboard.Board()
     rankcount = 0
@@ -142,14 +145,14 @@ for Fenstring in tlist:
 
     #minimax(ourboard,1,True)
 
-
+    Result = MiniMax.minimax(ourboard,3,3,True)
 
     #for color in ["White","Black"]:
-    for rows in ourboard.board:
+    """ for rows in ourboard.board:
         for piece in rows:
             if(isinstance(piece,Kpieces.Kpiece) and (piece.player == ourboard.currentplayer)):
                 new_boards.extend( piece.actions())
-                None
+                None """
     None
     startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
     #endresult = MiniMax()
@@ -164,3 +167,4 @@ tendtime = time.perf_counter()
 tfinish = tendtime-tstarttime
 print(tfinish)
 None
+print (Result)
