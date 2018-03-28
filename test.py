@@ -158,6 +158,8 @@ for Fenstring in tlist:
     endtime = time.perf_counter()
     finish = endtime-starttime
     print(finish)
+    None
+None
 tendtime = time.perf_counter()
 tfinish = tendtime-tstarttime
 print(tfinish)

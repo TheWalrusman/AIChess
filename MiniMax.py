@@ -20,29 +20,31 @@
 minimax(origin, depth, TRUE)
  """
 import Kpieces
-def minimax(self,node,depth,MaxorMin,value = None):
-    if (depth == 0) or (value != None):
-        return value
+def minimax(self,board,depth,MaxorMin,value = None):
+    new_boards = []
+    if (depth == 0) or (value != None) or (board.stalecheck()):
+        return board.currentboard.currentmat("White")
 
     if(MaxorMin == True):
         bestval = -100000000000
         for rows in self.board:
             for piece in rows:
                 if(isinstance(piece,Kpieces.Kpiece) and (piece.player == self.currentplayer)):
-                    newnode = piece.action()
-                    tmpval = self.minimax(newnode,depth-1,False)
-                    bestval = max(bestval,tmpval)
-                return bestval
+                    new_boards.extend(piece.action())
+        for node in new_boards:
+            tmpval = self.minimax(node,depth-1,False)
+            bestval = max(bestval,tmpval)
+        return bestval
     if(MaxorMin == False):
         bestval = 100000000000
         for rows in self.board:
             for piece in rows:
                 if(isinstance(piece,Kpieces.Kpiece) and (piece.player == self.currentplayer)):
-                    newnodes += piece.action()
-                for node in newnodes:
-                    tmpval = self.minimax(newnode,depth-1,False)
-                    bestval = min(bestval,tmpval)
-                return bestval
+                    new_boards.extend(piece.action())
+        for node in new_boards:
+            tmpval = self.minimax(node,depth-1,True)
+            bestval = min(bestval,tmpval)
+        return bestval
     
                 
     
